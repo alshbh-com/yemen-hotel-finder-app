@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -40,7 +39,7 @@ import {
   ParkingCircle,
   Snowflake,
   DumbbellIcon,
-  Pool,
+  Waves,
 } from "lucide-react";
 
 const HotelDetails = () => {
@@ -242,7 +241,7 @@ const HotelDetails = () => {
     if (lowerAmenity.includes("مطعم")) return <Utensils className="h-5 w-5" />;
     if (lowerAmenity.includes("تكييف")) return <Snowflake className="h-5 w-5" />;
     if (lowerAmenity.includes("صالة") || lowerAmenity.includes("لياقة") || lowerAmenity.includes("رياضة")) return <DumbbellIcon className="h-5 w-5" />;
-    if (lowerAmenity.includes("مسبح") || lowerAmenity.includes("سباحة")) return <Pool className="h-5 w-5" />;
+    if (lowerAmenity.includes("مسبح") || lowerAmenity.includes("سباحة")) return <Waves className="h-5 w-5" />;
     return <ParkingCircle className="h-5 w-5" />;
   };
 
