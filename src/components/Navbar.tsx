@@ -105,12 +105,10 @@ const Navbar = () => {
           <Link to="/contact" className="px-3 py-2 text-sm font-medium hover:text-primary">
             اتصل بنا
           </Link>
-          {isAdmin && (
-            <Link to="/admin" className="px-3 py-2 text-sm font-medium text-primary hover:text-primary/80">
-              <Settings className="w-4 h-4 inline ml-1" />
-              لوحة التحكم
-            </Link>
-          )}
+          <Link to="/admin" className="px-3 py-2 text-sm font-medium text-primary hover:text-primary/80">
+            <Settings className="w-4 h-4 inline ml-1" />
+            لوحة التحكم
+          </Link>
         </nav>
 
         {/* Right side actions */}
@@ -185,16 +183,14 @@ const Navbar = () => {
             >
               اتصل بنا
             </Link>
-            {isAdmin && (
-              <Link 
-                to="/admin" 
-                className="flex items-center px-3 py-2 text-sm font-medium text-primary hover:text-primary/80"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                <Settings className="w-4 h-4 ml-2" />
-                لوحة التحكم
-              </Link>
-            )}
+            <Link 
+              to="/admin" 
+              className="flex items-center px-3 py-2 text-sm font-medium text-primary hover:text-primary/80"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              <Settings className="w-4 h-4 ml-2" />
+              لوحة التحكم
+            </Link>
             
             {!user ? (
               <Link

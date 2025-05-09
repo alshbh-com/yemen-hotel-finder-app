@@ -24,6 +24,13 @@ const AdminDashboard = () => {
   const { toast } = useToast();
 
   useEffect(() => {
+    // Check if admin is already authenticated with password
+    const isAdminAuthenticated = localStorage.getItem("adminAuthenticated") === "true";
+    if (isAdminAuthenticated) {
+      setAuthenticated(true);
+    }
+    
+    // Check if there's a user session (optional now)
     const checkSession = async () => {
       try {
         const { data, error } = await supabase.auth.getSession();
@@ -32,11 +39,6 @@ const AdminDashboard = () => {
         
         if (data?.session?.user) {
           setUser(data.session.user);
-          // Verify if they have already entered the admin password
-          const isAdminAuthenticated = localStorage.getItem("adminAuthenticated") === "true";
-          if (isAdminAuthenticated) {
-            setAuthenticated(true);
-          }
         }
       } catch (error) {
         console.error("Error checking session:", error);
@@ -67,11 +69,10 @@ const AdminDashboard = () => {
 
   const handleLogout = async () => {
     try {
-      await supabase.auth.signOut();
+      // Only clear admin authentication, no need to sign out from Supabase
       localStorage.removeItem("adminAuthenticated");
       setAuthenticated(false);
-      setUser(null);
-      navigate("/login");
+      navigate("/admin");
       toast({
         title: "تم تسجيل الخروج بنجاح",
       });
@@ -89,41 +90,6 @@ const AdminDashboard = () => {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-primary"></div>
-      </div>
-    );
-  }
-
-  if (!user) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4" dir="rtl">
-        <div className="w-full max-w-md">
-          <div className="text-center mb-6">
-            <div className="inline-flex items-center gap-2">
-              <Hotel className="w-8 h-8 text-primary" />
-              <span className="text-2xl font-bold text-primary">فندقي</span>
-            </div>
-          </div>
-          
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h1 className="text-2xl font-bold mb-4 text-center">لوحة التحكم</h1>
-            <p className="text-gray-600 mb-6 text-center">
-              يجب تسجيل الدخول أولاً للوصول إلى لوحة التحكم
-            </p>
-            
-            <Button 
-              onClick={() => navigate("/login")}
-              className="w-full"
-            >
-              تسجيل الدخول
-            </Button>
-          </div>
-          
-          <div className="mt-6 text-center">
-            <Link to="/" className="text-sm text-gray-600 hover:underline">
-              العودة إلى الصفحة الرئيسية
-            </Link>
-          </div>
-        </div>
       </div>
     );
   }
@@ -220,15 +186,27 @@ const AdminDashboard = () => {
         </nav>
         
         <div className="pt-4 mt-6 border-t">
-          <div className="mb-4 flex items-center">
-            <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center mr-3">
-              {user?.email?.charAt(0).toUpperCase() || "U"}
+          {user ? (
+            <div className="mb-4 flex items-center">
+              <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center mr-3">
+                {user?.email?.charAt(0).toUpperCase() || "U"}
+              </div>
+              <div>
+                <p className="font-medium">{user?.email}</p>
+                <p className="text-xs text-gray-500">مدير</p>
+              </div>
             </div>
-            <div>
-              <p className="font-medium">{user?.email}</p>
-              <p className="text-xs text-gray-500">مدير</p>
+          ) : (
+            <div className="mb-4 flex items-center">
+              <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center mr-3">
+                <Settings className="w-5 h-5 text-gray-500" />
+              </div>
+              <div>
+                <p className="font-medium">وضع المدير</p>
+                <p className="text-xs text-gray-500">مدير</p>
+              </div>
             </div>
-          </div>
+          )}
           
           <Button 
             variant="outline" 
